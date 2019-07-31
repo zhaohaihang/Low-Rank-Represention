@@ -1,0 +1,13 @@
+function [F_ini,Z_ini]=get_F_Z_init(X,LRRAGR_class_num)
+options = [];
+options.NeighborMode = 'KNN';
+options.k = 10;
+options.WeightMode = 'Binary';      % Binary  HeatKernel
+Z = constructW(X',options);
+Z = full(Z);
+Z1 = Z-diag(diag(Z));         
+Z = (Z1+Z1')/2;
+DZ= diag(sum(Z));
+LZ = DZ - Z;                
+[F_ini, ~, evs]=eig1(LZ, LRRAGR_class_num, 0);
+Z_ini = Z;
